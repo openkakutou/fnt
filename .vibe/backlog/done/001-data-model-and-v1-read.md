@@ -1,5 +1,5 @@
 ---
-status: todo
+status: done
 ---
 # Data model and `.fnt` v1 reading
 
