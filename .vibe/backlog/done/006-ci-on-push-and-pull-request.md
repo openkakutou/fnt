@@ -1,5 +1,5 @@
 ---
-status: todo
+status: done
 ---
 # CI on push and pull request
 
