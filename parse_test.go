@@ -375,30 +375,6 @@ func TestParse_CorpusFiles_ParseWithGlyphsStartingInsideImage(t *testing.T) {
 	}
 }
 
-func TestParse_RealFont_F4x6_GlyphRegions(t *testing.T) {
-	dir := os.Getenv("FNT_CORPUS_DIR")
-	if dir == "" {
-		t.Skip("FNT_CORPUS_DIR not set")
-	}
-	data, err := os.ReadFile(filepath.Join(dir, "f-4x6.fnt"))
-	if err != nil {
-		t.Fatalf("f-4x6.fnt missing from FNT_CORPUS_DIR: %v", err)
-	}
-	f, err := Parse(data)
-	if err != nil {
-		t.Fatalf("Parse: %v", err)
-	}
-	if f.Size != (Point{3, 6}) || f.Type != "variable" {
-		t.Errorf("size=%v type=%q", f.Size, f.Type)
-	}
-	want := map[rune]Glyph{'A': {0, 3}, 'M': {48, 5}, '[': {216, 3}}
-	for r, g := range want {
-		if f.Glyphs[r] != g {
-			t.Errorf("glyph %q = %v, want %v", r, f.Glyphs[r], g)
-		}
-	}
-}
-
 func TestParse_ReturnsError_On24BitPCX(t *testing.T) {
 	// 2x1 image, 3 planes, 2 bytes per line: one literal row of R,R,G,G,B,B.
 	pcx := make([]byte, pcxHeaderSize)

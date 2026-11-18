@@ -1,0 +1,79 @@
+{
+  "ver": 256,
+  "ver2": 0,
+  "size": {
+    "X": 9,
+    "Y": 13
+  },
+  "spacing": {
+    "X": 1,
+    "Y": 1
+  },
+  "offset": {
+    "X": 0,
+    "Y": 0
+  },
+  "colors": 16,
+  "type": "variable",
+  "imageWidth": 114,
+  "imageHeight": 13,
+  "pixelsSha256": "29b68f14476eba35bafe45f38726af6f602027d41938624a1bc226d0ed6f4983",
+  "paletteSha256": "d06113b5913ac91feb9ab3c609c810b001624a56ef1a9be2b3c31dca0392b585",
+  "glyphs": [
+    {
+      "char": 48,
+      "x": 0,
+      "width": 9
+    },
+    {
+      "char": 49,
+      "x": 10,
+      "width": 9
+    },
+    {
+      "char": 50,
+      "x": 20,
+      "width": 9
+    },
+    {
+      "char": 51,
+      "x": 30,
+      "width": 9
+    },
+    {
+      "char": 52,
+      "x": 40,
+      "width": 9
+    },
+    {
+      "char": 53,
+      "x": 50,
+      "width": 9
+    },
+    {
+      "char": 54,
+      "x": 60,
+      "width": 9
+    },
+    {
+      "char": 55,
+      "x": 70,
+      "width": 9
+    },
+    {
+      "char": 56,
+      "x": 80,
+      "width": 9
+    },
+    {
+      "char": 57,
+      "x": 90,
+      "width": 9
+    },
+    {
+      "char": 111,
+      "x": 100,
+      "width": 14
+    }
+  ]
+}
