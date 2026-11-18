@@ -32,17 +32,22 @@ jobs:
         run: go vet ./...
 
       - name: Build WASM module
+        if: hashFiles('cmd/wasm/*.go') != ''
         run: GOOS=js GOARCH=wasm go build -o fnt.wasm ./cmd/wasm
 
       - name: Copy wasm_exec.js glue
+        if: hashFiles('cmd/wasm/*.go') != ''
         run: cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" wasm_exec.js
 
       - name: Set up Node.js
+        if: hashFiles('cmd/wasm/*.go') != ''
         uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      # The WASM entrypoint and its smoke test arrive with their own backlog item.
+      # The WASM entrypoint and its smoke test arrive with backlog item 004; until
+      # cmd/wasm exists, the WASM steps below are skipped and a tag only
+      # publishes the Go module.
       # Gate publishing on a real smoke test of the exact just-built
       # fnt.wasm bytes, not just a successful native build/test/vet — a
       # broken WASM artifact (e.g. a panic-recovery regression at the JS
@@ -50,9 +55,11 @@ jobs:
       # a published release. See
       # .vibe/decisions/003-wasm-entrypoint-api-shape-and-release-smoke-gate.md.
       - name: Smoke test the WASM build
+        if: hashFiles('cmd/wasm/*.go') != ''
         run: node cmd/wasm/smoke.mjs fnt.wasm
 
       - name: Publish release assets
+        if: hashFiles('cmd/wasm/*.go') != ''
         uses: softprops/action-gh-release@v3
         with:
           files: |
