@@ -1,0 +1,102 @@
+{
+  "size": {
+    "X": 9,
+    "Y": 13
+  },
+  "spacing": {
+    "X": 1,
+    "Y": 1
+  },
+  "offset": {
+    "X": 0,
+    "Y": 0
+  },
+  "colors": 1,
+  "type": "bitmap",
+  "bankType": "palette",
+  "file": "num1.sff",
+  "banks": [
+    {
+      "bank": 0,
+      "glyphs": [
+        {
+          "char": 48,
+          "group": 0,
+          "image": 48,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 49,
+          "group": 0,
+          "image": 49,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 50,
+          "group": 0,
+          "image": 50,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 51,
+          "group": 0,
+          "image": 51,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 52,
+          "group": 0,
+          "image": 52,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 53,
+          "group": 0,
+          "image": 53,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 54,
+          "group": 0,
+          "image": 54,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 55,
+          "group": 0,
+          "image": 55,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 56,
+          "group": 0,
+          "image": 56,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 57,
+          "group": 0,
+          "image": 57,
+          "width": 9,
+          "axisX": 0
+        },
+        {
+          "char": 111,
+          "group": 0,
+          "image": 111,
+          "width": 14,
+          "axisX": 0
+        }
+      ]
+    }
+  ]
+}

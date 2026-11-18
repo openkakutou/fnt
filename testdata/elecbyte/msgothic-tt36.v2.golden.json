@@ -1,0 +1,19 @@
+{
+  "size": {
+    "X": 18,
+    "Y": 36
+  },
+  "spacing": {
+    "X": 1,
+    "Y": 1
+  },
+  "offset": {
+    "X": 0,
+    "Y": 0
+  },
+  "colors": 1,
+  "type": "truetype",
+  "bankType": "palette",
+  "file": "msgothic.ttc",
+  "banks": []
+}

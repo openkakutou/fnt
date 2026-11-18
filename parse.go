@@ -158,9 +158,16 @@ func sectionName(line string) string {
 	return strings.ToLower(inner)
 }
 
-// parseDef reads key/value lines until the next section line, first
-// occurrence of a key winning (IniSection.Parse), then applies loadDefInfo.
+// parseDef reads the [Def] section lines and applies loadDefInfo.
 func parseDef(lines []string, i int, font *Font) int {
+	section, next := readSection(lines, i)
+	applyDef(section, font)
+	return next
+}
+
+// readSection reads key/value lines until the next section line, first
+// occurrence of a key winning (IniSection.Parse). Keys are lowercased.
+func readSection(lines []string, i int) (map[string]string, int) {
 	section := map[string]string{}
 	for ; i < len(lines); i++ {
 		line := lines[i]
@@ -183,13 +190,16 @@ func parseDef(lines []string, i int, font *Font) int {
 			section[key] = value
 		}
 	}
+	return section, i
+}
 
+// applyDef is loadDefInfo for the fields v1 and v2 share.
+func applyDef(section map[string]string, font *Font) {
 	font.Type = strings.ToLower(section["type"])
 	font.Size = readPoint(section["size"], font.Size, true)
 	font.Spacing = readPoint(section["spacing"], font.Spacing, false)
 	font.Offset = readPoint(section["offset"], font.Offset, false)
 	font.Colors = clamp(int(atoi(section["colors"])), 1, 255)
-	return i
 }
 
 // readPoint parses "x,y" like loadDefInfo: an empty component keeps the

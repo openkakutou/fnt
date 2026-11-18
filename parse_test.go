@@ -469,3 +469,42 @@ func FuzzParse(f *testing.F) {
 		_, _ = Parse(data)
 	})
 }
+
+// Bytes after the declared text block length, here an extra [Map] line, are
+// ignored.
+func TestParse_TrailingBytesAfterDeclaredText_AreIgnored(t *testing.T) {
+	text := "[Def]\nSize = 2,2\n[Map]\nA\n"
+	pcx := buildPCXBlock(t, 20, 2, stripPixels(20, 2), testPalette())
+	data := buildFnt(pcx, text+"B\n")
+	binary.LittleEndian.PutUint32(data[28:], uint32(len(text)))
+	f, err := Parse(data)
+	if err != nil {
+		t.Fatalf("Parse: %v", err)
+	}
+	if _, ok := f.Glyphs['B']; ok {
+		t.Errorf("B was read from beyond the declared text block")
+	}
+	if f.Glyphs['A'] != (Glyph{0, 2}) {
+		t.Errorf("A = %v", f.Glyphs['A'])
+	}
+}
+
+func TestParse_ZeroTextLength_GivesEmptyFontWithoutError(t *testing.T) {
+	pcx := buildPCXBlock(t, 20, 2, stripPixels(20, 2), testPalette())
+	data := buildFnt(pcx, "[Def]\nSize = 2,2\n[Map]\nA\n")
+	binary.LittleEndian.PutUint32(data[28:], 0)
+	f, err := Parse(data)
+	if err != nil {
+		t.Fatalf("Parse: %v", err)
+	}
+	if len(f.Glyphs) != 0 || f.Size != (Point{0, 0}) {
+		t.Errorf("glyphs = %d, Size = %v, want none and {0 0}", len(f.Glyphs), f.Size)
+	}
+}
+
+func TestParse_MapHexToken_StopsAtFirstNonHexDigit(t *testing.T) {
+	f := parseFntText(t, 20, 2, "[Def]\nSize = 2,2\n[Map]\n0x41zz\n")
+	if f.Glyphs['A'] != (Glyph{0, 2}) {
+		t.Errorf("A = %v, want {0 2}", f.Glyphs['A'])
+	}
+}

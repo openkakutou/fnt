@@ -10,6 +10,8 @@ Downloaded from [`ikemen-engine/Ikemen_GO-Elecbyte-Screenpack`](https://github.c
 
 These are the MUGEN font files Elecbyte ships with MUGEN, bundled by Ikemen GO.
 
+Fonts v2 (`.def` text plus the `.sff` holding the glyphs), from the same commit and folder: `f-4x6.def` + `f-4x6.sff`, `num1.def` + `num1.sff` (8 palette banks), `font2.def` + `font2.sff`, and `msgothic-tt36.def` (a TrueType definition; its `.ttc` is not included).
+
 ## Licence
 
 These files are **not** under this repository's MIT licence. They keep their own licence, quoted from the source repository's `LICENCE.txt`:
@@ -21,4 +23,4 @@ They are © Elecbyte, redistributed here for non-commercial testing only.
 
 ## Golden files
 
-`<name>.golden.json` next to each font records what `Parse` reads from it. The golden test compares against it. After a deliberate parser change, regenerate with `go test -run TestParse_ElecbyteFonts -update` and review the diff.
+`<name>.golden.json` next to each v1 font records what `Parse` reads from it; `<name>.v2.golden.json` next to each `.def` records what `LoadV2` reads (fields plus every glyph per bank). These goldens are regression snapshots of the library's own output; the independent checks are the hand-read tests (values read from the files with python or by eye). The golden test compares against it. After a deliberate parser change, regenerate with `go test -run TestParse_ElecbyteFonts -update` (it also rewrites the v2 goldens) and review the diff.

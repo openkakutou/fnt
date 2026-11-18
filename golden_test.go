@@ -189,3 +189,83 @@ func TestParse_ElecbyteJgFixed_GlyphsFollowOrderTimesSize(t *testing.T) {
 		}
 	}
 }
+
+type goldenGlyphV2 struct {
+	Char  int `json:"char"`
+	Group int `json:"group"`
+	Image int `json:"image"`
+	Width int `json:"width"`
+	AxisX int `json:"axisX"`
+}
+
+type goldenBankV2 struct {
+	Bank   int             `json:"bank"`
+	Glyphs []goldenGlyphV2 `json:"glyphs"`
+}
+
+type goldenSummaryV2 struct {
+	Size     Point          `json:"size"`
+	Spacing  Point          `json:"spacing"`
+	Offset   Point          `json:"offset"`
+	Colors   int            `json:"colors"`
+	Type     string         `json:"type"`
+	BankType string         `json:"bankType"`
+	File     string         `json:"file"`
+	Banks    []goldenBankV2 `json:"banks"`
+}
+
+func summarizeV2(f *FontV2) goldenSummaryV2 {
+	banks := make([]goldenBankV2, 0, len(f.Banks))
+	for bank, glyphs := range f.Banks {
+		list := make([]goldenGlyphV2, 0, len(glyphs))
+		for r, g := range glyphs {
+			list = append(list, goldenGlyphV2{Char: int(r), Group: g.Group, Image: g.Image, Width: g.Width, AxisX: g.AxisX})
+		}
+		sort.Slice(list, func(i, j int) bool { return list[i].Char < list[j].Char })
+		banks = append(banks, goldenBankV2{Bank: bank, Glyphs: list})
+	}
+	sort.Slice(banks, func(i, j int) bool { return banks[i].Bank < banks[j].Bank })
+	return goldenSummaryV2{
+		Size: f.Size, Spacing: f.Spacing, Offset: f.Offset,
+		Colors: f.Colors, Type: f.Type, BankType: f.BankType, File: f.File,
+		Banks: banks,
+	}
+}
+
+func TestParse_ElecbyteFontsV2_MatchGoldenFiles(t *testing.T) {
+	paths, err := filepath.Glob(filepath.Join("testdata", "elecbyte", "*.def"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(paths) != 4 {
+		t.Fatalf("found %d v2 fixtures, want 4", len(paths))
+	}
+	for _, p := range paths {
+		name := strings.TrimSuffix(filepath.Base(p), ".def")
+		t.Run(name, func(t *testing.T) {
+			f, err := LoadV2(p)
+			if err != nil {
+				t.Fatalf("LoadV2: %v", err)
+			}
+			got, err := json.MarshalIndent(summarizeV2(f), "", "  ")
+			if err != nil {
+				t.Fatal(err)
+			}
+			got = append(got, '\n')
+			goldenPath := strings.TrimSuffix(p, ".def") + ".v2.golden.json"
+			if *update {
+				if err := os.WriteFile(goldenPath, got, 0o644); err != nil {
+					t.Fatal(err)
+				}
+				return
+			}
+			want, err := os.ReadFile(goldenPath)
+			if err != nil {
+				t.Fatalf("golden missing (run with -update): %v", err)
+			}
+			if string(got) != string(want) {
+				t.Errorf("%s differs from %s (run with -update and review the diff)", name, goldenPath)
+			}
+		})
+	}
+}

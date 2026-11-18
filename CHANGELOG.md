@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Read MUGEN 1.1 / Ikemen GO version 2 fonts: the font definition file and the sprite file holding its characters, with every character resolved to its sprite (width and drawing offset) per bank, following Ikemen GO's own rules. TrueType font definitions are read without glyphs, and a missing or unreadable sprite file is reported with a clear error naming it.
+
 ## [0.1.0] - 2026-11-18
 
 ### Added
